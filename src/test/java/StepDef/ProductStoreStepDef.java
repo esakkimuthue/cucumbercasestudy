@@ -28,7 +28,7 @@ public class ProductStoreStepDef {
 	
 	static WebDriver driver;
 	static WebDriverWait wait;
-	static String BefDel;
+	static String beforeDel;
 	
 	@BeforeAll
 	public static void setup() throws IOException, InterruptedException
@@ -73,15 +73,15 @@ public class ProductStoreStepDef {
 	public void add_an_item_to_cart(String Category, String item) throws InterruptedException {
 		Thread.sleep(3000);
 		driver.findElement(By.xpath("//a[text()='Home ']")).click();
-		String currentCategory = "//a[text()='"+Category+"']";
-		driver.findElement(By.xpath(currentCategory)).click();
+		String openCategory = "//a[text()='"+Category+"']";
+		driver.findElement(By.xpath(openCategory)).click();
 		Thread.sleep(2000);
-		String currentItem = "//a[text()='"+item+"']";
-		driver.findElement(By.xpath(currentItem)).click();
+		String openedItem = "//a[text()='"+item+"']";
+		driver.findElement(By.xpath(openedItem)).click();
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
-		WebElement btn = driver.findElement(By.xpath("//a[text()='Add to cart']"));
-		wait.until(ExpectedConditions.elementToBeClickable(btn));
-		btn.click();
+		WebElement button = driver.findElement(By.xpath("//a[text()='Add to cart']"));
+		wait.until(ExpectedConditions.elementToBeClickable(button));
+		button.click();
 	}
 	@Then("Should Add items to the Cart")
 	public void should_add_items_to_the_cart() {
@@ -103,18 +103,18 @@ public class ProductStoreStepDef {
 	@When("User deletes an Item")
 	public void user_deletes_an_item() throws InterruptedException {
 		Thread.sleep(3000);
-	    BefDel = driver.findElement(By.xpath("//div/h3")).getText();
+		beforeDel = driver.findElement(By.xpath("//div/h3")).getText();
 	    driver.findElement(By.xpath("//td/a")).click();
 	}
 	@Then("Delete an item from cart")
 	public void delete_an_item_from_cart() throws InterruptedException {
 		Thread.sleep(3000);
-	    String AftDel = driver.findElement(By.xpath("//div/h3")).getText();
-	    if(BefDel.equals(AftDel)) {
-			System.out.println("Product not Deleted");
+	    String afterDel = driver.findElement(By.xpath("//div/h3")).getText();
+	    if(beforeDel.equals(afterDel)) {
+			System.out.println("item not Deleted");
 		}
 		else {
-			System.out.println("Product Deleted");
+			System.out.println("item Deleted");
 		}
 	
 	}
@@ -137,8 +137,8 @@ public class ProductStoreStepDef {
 	}
 	@Then("Order is Purchased")
 	public void order_is_purchased() {
-		WebElement postPurchase = driver.findElement(By.xpath("//h2[contains(text(),'Thank you')]"));
-	    Assert.assertEquals(postPurchase.getText(), "Thank you for your purchase!");
+		WebElement afterPurchase = driver.findElement(By.xpath("//h2[contains(text(),'Thank you')]"));
+	    Assert.assertEquals(afterPurchase.getText(), "Thank you for your purchase!");
 	    driver.findElement(By.cssSelector("button[tabindex='1']")).click();
 
 	}
