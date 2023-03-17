@@ -2,6 +2,7 @@ package StepDef;
 
 import java.io.IOException;
 import java.time.Duration;
+import java.util.List;
 
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
@@ -34,9 +35,9 @@ public class ProductStoreStepDef {
 	public static void setup() throws IOException, InterruptedException
 		{
 			WebDriverManager.chromedriver().setup();
-			ChromeOptions options = new ChromeOptions();
-			options.addArguments("--remote-allow-origins=*");
-			driver=new ChromeDriver(options);
+			ChromeOptions browser = new ChromeOptions();
+			browser.addArguments("--remote-allow-origins=*");
+			driver=new ChromeDriver(browser);
 			driver.manage().window().maximize();
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
 			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(40));
@@ -108,14 +109,13 @@ public class ProductStoreStepDef {
 	}
 	@Then("Delete an item from cart")
 	public void delete_an_item_from_cart() throws InterruptedException {
-		Thread.sleep(3000);
-	    String afterDel = driver.findElement(By.xpath("//div/h3")).getText();
-	    if(beforeDel.equals(afterDel)) {
-			System.out.println("item not Deleted");
-		}
-		else {
-			System.out.println("item Deleted");
-		}
+		
+		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds (10));
+		List<WebElement> selectedpro = driver.findElements (By.xpath("//tr/td[2]"));
+		int currentsize = selectedpro.size();
+		int productsize = 0;
+		boolean check = currentsize != productsize;
+		Assert.assertTrue(check);
 	
 	}
 
